@@ -1,25 +1,16 @@
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
+import { ArrowRight, ArrowUpRight, Box, CheckCircle2, Code2, Layers3 } from "lucide-react";
+import { Link } from "wouter";
+import { InlineCTA, ProjectVisual, SectionHeading } from "@/components/SiteLayout";
+import { projects, services } from "@/data/site";
 
-/**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Best Practices, Design Guide and Common Pitfalls
- */
 export default function Home() {
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
-
-  return (
-    <div className="min-h-screen flex flex-col">
-      <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
-      </main>
-    </div>
-  );
+  return <>
+    <section className="hero"><div className="container hero-grid"><div><div className="hero-kicker reveal"><i /> Software development studio <span>•</span> Addis Ababa, Ethiopia</div><h1 className="display reveal reveal-delay">We build software that moves business <em>forward.</em></h1><p className="hero-copy reveal reveal-delay-2">Modern web platforms, mobile apps, and AI systems for ambitious teams and growing businesses.</p><div className="hero-actions reveal reveal-delay-2"><Link href="/contact" className="btn btn-primary">Start a project <ArrowUpRight size={16} /></Link><Link href="/work" className="btn btn-secondary">View our work <ArrowRight size={16} /></Link></div></div><div className="hero-art" aria-hidden="true"><div className="art-grid" /><div className="art-block a" /><div className="art-block b" /><div className="art-block c" /><div className="art-block d" /><div className="art-circle" /><div className="art-code">&lt;/&gt;</div><div className="art-line one" /><div className="art-line two" /><div className="art-dots" /><div className="art-note">Better<br />software.<br />Bigger<br />possibilities.</div></div></div></section>
+    <section className="section"><div className="container"><SectionHeading eyebrow="Our services" title="Full-stack software solutions" href="/services" linkLabel="View all services" /><div className="service-grid">{services.map((service) => { const Icon = service.icon; return <article key={service.title} className="service-card"><span className="service-icon"><Icon size={25} strokeWidth={1.5} /></span><h3>{service.title}</h3><p>{service.description}</p></article>; })}</div></div></section>
+    <section className="section" style={{ paddingTop: 0 }}><div className="container"><SectionHeading eyebrow="Featured work" title="Real products. Real impact." href="/work" linkLabel="View all work" /><div className="work-grid">{projects.slice(0, 4).map(project => <a key={project.name} className="work-card" href={project.href} target="_blank" rel="noreferrer"><ProjectVisual visual={project.visual} title={project.name} /><div className="work-meta"><div><h3>{project.name}</h3><p>{project.type}</p></div><ArrowUpRight className="work-arrow" size={16} /></div></a>)}</div></div></section>
+    <section className="section" style={{ paddingTop: 0 }}><div className="container"><div className="eyebrow">Products</div><h2 className="display" style={{ margin: "10px 0 22px", fontSize: "clamp(1.8rem,3vw,2.6rem)" }}>Tools for modern teams</h2><div className="product-band"><div className="product-mark"><div className="product-mark-icon"><Box size={20} /></div><div><h3>KiloFlow</h3><p>A lightweight workflow automation tool for modern teams.</p></div></div><div className="product-note"><strong>Coming soon</strong>More products are on the way. Built with the same care and focus.</div><Link href="/products" className="text-link">Explore products <ArrowRight size={14} /></Link></div></div></section>
+    <section className="section section-tight"><div className="container"><SectionHeading eyebrow="How we work" title="A clear path from idea to launch." /><div className="card-grid">{[{n:"01",t:"Discover",d:"We get close to the problem, the people, and the opportunity."},{n:"02",t:"Design",d:"We make the experience visible, testable, and easy to align around."},{n:"03",t:"Build",d:"We ship in thoughtful increments with quality built in."},{n:"04",t:"Launch & support",d:"We stay close as the product meets the real world."}].map(step => <div className="info-card" key={step.n}><div className="eyebrow">{step.n}</div><h3>{step.t}</h3><p>{step.d}</p></div>)}</div></div></section>
+    <section className="section section-tight"><div className="container"><div className="dark-panel" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}><div><div className="eyebrow">Built for the real world</div><h3 style={{ fontSize: "1.25rem", marginTop: 9 }}>Web. Mobile. AI. Cloud.</h3></div><div style={{ display: "flex", gap: 18, color: "#a4a4a0" }}><Code2 size={22} /><Layers3 size={22} /><CheckCircle2 size={22} /></div></div></div></section>
+    <InlineCTA />
+  </>;
 }

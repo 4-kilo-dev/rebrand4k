@@ -1,42 +1,29 @@
-import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
-import ErrorBoundary from "./components/ErrorBoundary";
-import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
-
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import { SiteLayout } from "@/components/SiteLayout";
+import Home from "@/pages/Home";
+import { AboutPage, CareersPage, ContactPage, JobDetailPage, ProductDetailPage, ProductsPage, ServicesPage, WorkPage } from "@/pages/Pages";
+import NotFound from "@/pages/NotFound";
 
 function Router() {
-  return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
-  );
+  return <Switch>
+    <Route path="/" component={Home} />
+    <Route path="/services" component={ServicesPage} />
+    <Route path="/work" component={WorkPage} />
+    <Route path="/products" component={ProductsPage} />
+    <Route path="/products/:slug">{params => <ProductDetailPage slug={params.slug} />}</Route>
+    <Route path="/careers" component={CareersPage} />
+    <Route path="/careers/:slug">{params => <JobDetailPage slug={params.slug} />}</Route>
+    <Route path="/about" component={AboutPage} />
+    <Route path="/contact" component={ContactPage} />
+    <Route path="/404" component={NotFound} />
+    <Route component={NotFound} />
+  </Switch>;
 }
 
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
-
-function App() {
-  return (
-    <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
-      </ThemeProvider>
-    </ErrorBoundary>
-  );
+export default function App() {
+  return <ErrorBoundary><ThemeProvider defaultTheme="dark" switchable><TooltipProvider><Toaster /><SiteLayout><Router /></SiteLayout></TooltipProvider></ThemeProvider></ErrorBoundary>;
 }
-
-export default App;
