@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { BrainCircuit, Cloud, Code2, Smartphone } from "lucide-react";
+import { BrainCircuit, Cloud, Code2, GitBranch, Smartphone } from "lucide-react";
 
 export type Service = { title: string; description: string; icon: LucideIcon };
 export type Project = { name: string; type: string; description: string; visual: string; href: string };
@@ -8,6 +8,7 @@ export const services: Service[] = [
   { title: "Web Development", description: "Scalable, high-performance web platforms built around your goals.", icon: Code2 },
   { title: "Mobile Apps", description: "Beautiful, reliable mobile apps for iOS and Android.", icon: Smartphone },
   { title: "AI & Machine Learning", description: "Intelligent systems that automate, optimize, and create value.", icon: BrainCircuit },
+  { title: "Automation & Integrations", description: "Connected workflows that remove repetitive work and keep systems moving.", icon: GitBranch },
   { title: "Cloud & DevOps", description: "Secure, scalable infrastructure for long-term growth.", icon: Cloud },
 ];
 
@@ -17,6 +18,14 @@ export const projects: Project[] = [
   { name: "Afriuz", type: "Mobile App · Fintech", description: "A brighter, simpler interface for everyday banking.", visual: "afriuz", href: "https://afriuz.com" },
   { name: "Vortex Visual", type: "Web Platform · Creative Agency", description: "Operations management for a fast-moving LED screen business.", visual: "vortex", href: "https://work.vortexvisual.et/" },
   { name: "Askamar Labor", type: "Web Platform · Recruitment", description: "A clearer path from skilled talent to meaningful work.", visual: "askamar", href: "https://askamarlabor.com/resume/" },
+];
+
+export const partners = [
+  { name: "Noodo Bakers", mark: "NB", descriptor: "Commerce" },
+  { name: "Zions Coffee", mark: "ZC", descriptor: "Hospitality" },
+  { name: "Afriuz", mark: "A", descriptor: "Fintech" },
+  { name: "Vortex Visual", mark: "VV", descriptor: "Operations" },
+  { name: "Askamar Labor", mark: "AL", descriptor: "Recruitment" },
 ];
 
 export const principles = [

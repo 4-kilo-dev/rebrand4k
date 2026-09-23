@@ -17,17 +17,17 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="container">
         <div className="navbar">
-          <Link href="/" className="wordmark" onClick={() => nav(true)} aria-label="4Kilo Dev home">4Kilo <span>Dev</span></Link>
+          <Link href="/" className="wordmark" onClick={() => nav(true)} aria-label="4Kilo Dev home"><span className="wordmark-mark">4</span><span>4Kilo</span> Dev</Link>
           <nav className="nav-links" aria-label="Primary navigation">
             {links.map(([label, href]) => <Link key={href} href={href} className={`nav-link ${location === href ? "active" : ""}`}>{label}</Link>)}
           </nav>
           <div className="nav-actions">
-            <Link href="/contact" className="btn btn-primary btn-sm">Start a project <ArrowUpRight size={14} /></Link>
+            <Link href="/contact" className="btn btn-primary btn-sm">Partner with us <ArrowUpRight size={14} /></Link>
             <button className="icon-button" type="button" onClick={toggleTheme} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}>{dark ? <Sun size={15} /> : <Moon size={15} />}</button>
             <button className="icon-button menu-button" type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-label={open ? "Close navigation" : "Open navigation"}>{open ? <X size={18} /> : <Menu size={18} />}</button>
           </div>
         </div>
-        {open && <nav className="mobile-menu" aria-label="Mobile navigation">{links.map(([label, href]) => <Link key={href} href={href} className={`nav-link ${location === href ? "active" : ""}`} onClick={() => nav(true)}>{label}</Link>)}<Link href="/contact" className="btn btn-primary" onClick={() => nav(true)}>Start a project <ArrowUpRight size={15} /></Link></nav>}
+        {open && <nav className="mobile-menu" aria-label="Mobile navigation">{links.map(([label, href]) => <Link key={href} href={href} className={`nav-link ${location === href ? "active" : ""}`} onClick={() => nav(true)}>{label}</Link>)}<Link href="/contact" className="btn btn-primary" onClick={() => nav(true)}>Partner with us <ArrowUpRight size={15} /></Link></nav>}
       </div>
     </header>
   );
