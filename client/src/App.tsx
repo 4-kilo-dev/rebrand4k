@@ -1,4 +1,4 @@
-import { Route, Switch } from "wouter";
+import { usePathname } from "next/navigation";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/contexts/ThemeContext";
@@ -9,21 +9,28 @@ import { AboutPage, CareersPage, ContactPage, JobDetailPage, ProductDetailPage, 
 import NotFound from "@/pages/NotFound";
 
 function Router() {
-  return <Switch>
-    <Route path="/" component={Home} />
-    <Route path="/services" component={ServicesPage} />
-    <Route path="/work" component={WorkPage} />
-    <Route path="/products" component={ProductsPage} />
-    <Route path="/products/:slug">{params => <ProductDetailPage slug={params.slug} />}</Route>
-    <Route path="/careers" component={CareersPage} />
-    <Route path="/careers/:slug">{params => <JobDetailPage slug={params.slug} />}</Route>
-    <Route path="/about" component={AboutPage} />
-    <Route path="/contact" component={ContactPage} />
-    <Route path="/404" component={NotFound} />
-    <Route component={NotFound} />
-  </Switch>;
+  const pathname = usePathname();
+
+  if (pathname === "/") return <Home />;
+  if (pathname === "/services") return <ServicesPage />;
+  if (pathname === "/work") return <WorkPage />;
+  if (pathname === "/products") return <ProductsPage />;
+  if (pathname.startsWith("/products/")) {
+    const slug = pathname.replace("/products/", "");
+    return <ProductDetailPage slug={slug} />;
+  }
+  if (pathname === "/careers") return <CareersPage />;
+  if (pathname.startsWith("/careers/")) {
+    const slug = pathname.replace("/careers/", "");
+    return <JobDetailPage slug={slug} />;
+  }
+  if (pathname === "/about") return <AboutPage />;
+  if (pathname === "/contact") return <ContactPage />;
+  if (pathname === "/404") return <NotFound />;
+
+  return <NotFound />;
 }
 
 export default function App() {
-  return <ErrorBoundary><ThemeProvider defaultTheme="dark" switchable><TooltipProvider><Toaster /><SiteLayout><Router /></SiteLayout></TooltipProvider></ThemeProvider></ErrorBoundary>;
+  return <ErrorBoundary><ThemeProvider defaultTheme="light"><TooltipProvider><Toaster /><SiteLayout><Router /></SiteLayout></TooltipProvider></ThemeProvider></ErrorBoundary>;
 }
