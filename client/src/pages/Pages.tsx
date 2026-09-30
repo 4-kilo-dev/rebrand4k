@@ -5,6 +5,7 @@ import {
   BriefcaseBusiness,
   CheckCircle2,
   ChevronDown,
+  Code2,
   Layers3,
   Loader2,
   MapPin,
@@ -15,9 +16,9 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
-import { InlineCTA, PageHero, SectionHeading } from "@/components/SiteLayout";
+import { InlineCTA, PageHero, ProjectVisual, SectionHeading } from "@/components/SiteLayout";
 import { WorkCarousel } from "@/components/WorkCarousel";
-import { jobs, principles, products, projects, services } from "@/data/site";
+import { caseStudies, engagementModels, jobs, principles, products, projects, services, testimonials } from "@/data/site";
 
 // ─── EmailJS via REST API (no npm package needed) ────────────────────────────
 const EJS_SERVICE = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "";
@@ -90,6 +91,12 @@ export function ServicesPage() {
           </div>
         </div>
       </section>
+      <section className="page-section engagement-section" id="engagement">
+        <div className="container">
+          <SectionHeading eyebrow="Ways to work together" title="A model that fits the work." />
+          <div className="card-grid">{engagementModels.map((model, index) => <article className="info-card engagement-card" key={model.name}><span className="eyebrow">0{index + 1} · {model.timing}</span><h3>{model.name}</h3><p>{model.description}</p><ul className="detail-list">{model.includes.map(item => <li key={item}><CheckCircle2 size={15} />{item}</li>)}</ul><Link href="/contact?topic=engagement" className="text-link">Discuss this model <ArrowRight size={14} /></Link></article>)}</div>
+        </div>
+      </section>
       <InlineCTA />
     </>
   );
@@ -110,6 +117,9 @@ export function WorkPage() {
           <WorkCarousel projects={projects} />
         </div>
       </section>
+      <section className="page-section case-study-list-section" style={{ paddingTop: 0 }}>
+        <div className="container"><SectionHeading eyebrow="Case studies" title="The thinking behind the finished product." /><div className="case-study-list">{caseStudies.map((study, index) => <Link href={`/work/${study.slug}`} className="case-study-row" key={study.slug}><span className="case-study-index">0{index + 1}</span><div><span className="eyebrow">{study.sector}</span><h3>{study.name}</h3><p>{study.summary}</p></div><ArrowUpRight size={20} /></Link>)}</div></div>
+      </section>
       <section className="page-section" style={{ paddingTop: 0 }}>
         <div className="container">
           <div className="dark-panel">
@@ -122,6 +132,20 @@ export function WorkPage() {
       <InlineCTA />
     </>
   );
+}
+
+export function ProductCaseStudyPage({ slug }: { slug: string }) {
+  const study = caseStudies.find(item => item.slug === slug);
+  if (!study) return <><PageHero eyebrow="Case study" title={<>Work built around <em style={{ color: "var(--yellow)", fontStyle: "normal" }}>real needs.</em></>} copy="This case study could not be found." /><InlineCTA /></>;
+  const project = projects.find(item => item.name === study.name);
+  return <>
+    <PageHero eyebrow={`Case study · ${study.sector}`} title={<>{study.name} <em style={{ color: "var(--yellow)", fontStyle: "normal" }}>in practice.</em></>} copy={study.summary} />
+    {project && <section className="page-section case-study-preview"><div className="container">{project.image ? <img src={project.image} alt={`${study.name} project interface`} /> : <ProjectVisual visual={project.visual} title={project.name} />}</div></section>}
+    <section className="page-section"><div className="container case-study-story"><article><div className="eyebrow">The challenge</div><h2>Start with what needed to work better.</h2><p>{study.challenge}</p></article><article><div className="eyebrow">Our approach</div><h2>Make the important path clear.</h2><p>{study.approach}</p></article></div></section>
+    <section className="page-section case-study-delivery"><div className="container content-grid"><div><div className="eyebrow">What we delivered</div><h2>Thoughtful details, connected end to end.</h2></div><div><ul className="detail-list">{study.delivery.map(item => <li key={item}><CheckCircle2 size={16} />{item}</li>)}</ul></div></div></section>
+    <section className="page-section"><div className="container"><div className="dark-panel case-study-outcome"><div className="eyebrow">The result</div><h3>{study.name}, ready for its next chapter.</h3><p>{study.outcome}</p></div><div className="case-study-next"><Link href="/work" className="text-link"><ArrowRight size={14} /> Back to all work</Link><Link href="/contact?topic=similar-project" className="btn btn-primary">Build something similar <ArrowUpRight size={15} /></Link></div></div></section>
+    <InlineCTA />
+  </>;
 }
 
 // ─── Products ─────────────────────────────────────────────────────────────────
@@ -383,17 +407,24 @@ export function AboutPage() {
       <section className="page-section" style={{ paddingTop: 0 }}>
         <div className="container">
           <SectionHeading eyebrow="What we value" title="The principles behind the work." />
-          <div className="card-grid">
+          <div className="value-timeline">
             {principles.map((p, i) => (
-              <div className="info-card" key={p.title}>
-                <div className="eyebrow">0{i + 1}</div>
-                <h3>{p.title}</h3>
-                <p>{p.description}</p>
-              </div>
+              <article className="value-item" key={p.title}>
+                <span className="value-marker" aria-hidden="true" />
+                <div className="value-card">
+                  <div className="eyebrow">0{i + 1} <span> / 04</span></div>
+                  <h3>{p.title}</h3>
+                  <p>{p.description}</p>
+                </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
+      <section className="page-section team-section" id="team">
+        <div className="container"><SectionHeading eyebrow="The team" title="Small, multidisciplinary, close to the work." /><div className="content-grid team-intro"><p>We bring product thinking, design, and engineering together in one collaborative team. From our base in Addis Ababa, we work directly with the people closest to the problem, then stay involved through launch and what follows.</p><div className="team-disciplines"><span><Layers3 size={17} /> Product direction</span><span><Sparkles size={17} /> Experience design</span><span><Code2 size={17} /> Software engineering</span><span><Zap size={17} /> Delivery and ongoing care</span></div></div></div>
+      </section>
+      <section className="page-section" id="client-voices" style={{ paddingTop: 0 }}><div className="container"><SectionHeading eyebrow="Client voices" title="Built in partnership." /><div className="card-grid testimonial-grid">{testimonials.map(item => <figure className="info-card testimonial-card" key={item.name}><span className="testimonial-mark" aria-hidden="true">“</span><blockquote>{item.quote}</blockquote><figcaption><strong>{item.name}</strong><span>{item.context}</span></figcaption></figure>)}</div></div></section>
       <InlineCTA />
     </>
   );
@@ -443,6 +474,10 @@ export function ContactPage() {
               <div><MapPin size={16} /> Addis Ababa, Ethiopia</div>
               <div><MessageCircle size={16} /> Usually replying within 1–2 business days</div>
               <div><Zap size={16} /> Web, mobile, AI, and custom software</div>
+            </div>
+            <div className="contact-actions">
+              <a className="btn btn-primary" href="mailto:hello@4kilodev.com?subject=Book%20a%20discovery%20call">Book a discovery call <ArrowUpRight size={15} /></a>
+              {process.env.NEXT_PUBLIC_WHATSAPP_NUMBER && <a className="btn btn-secondary" href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER.replace(/\D/g, "")}?text=Hello%204Kilo%20Dev%2C%20I%27d%20like%20to%20discuss%20a%20project.`} target="_blank" rel="noreferrer">WhatsApp us <MessageCircle size={15} /></a>}
             </div>
           </div>
 

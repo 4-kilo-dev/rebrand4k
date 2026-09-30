@@ -1,0 +1,16 @@
+{
+  "name": "4Kilo Dev",
+  "short_name": "4Kilo",
+  "description": "Product engineering from Addis Ababa, Ethiopia.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f3eb",
+  "theme_color": "#c08a32",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

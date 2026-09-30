@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>/</loc></url>
-  <url><loc>/services</loc></url>
-  <url><loc>/work</loc></url>
-  <url><loc>/products</loc></url>
-  <url><loc>/products/kiloflow</loc></url>
-  <url><loc>/products/kilodesk</loc></url>
-  <url><loc>/careers</loc></url>
-  <url><loc>/careers/full-stack-engineer</loc></url>
-  <url><loc>/careers/mobile-developer</loc></url>
-  <url><loc>/careers/ui-ux-designer</loc></url>
-  <url><loc>/about</loc></url>
-  <url><loc>/contact</loc></url>
+  <url><loc>https://4kilodev.com/</loc></url>
+  <url><loc>https://4kilodev.com/services</loc></url>
+  <url><loc>https://4kilodev.com/work</loc></url>
+  <url><loc>https://4kilodev.com/work/enate</loc></url>
+  <url><loc>https://4kilodev.com/work/zions-coffee</loc></url>
+  <url><loc>https://4kilodev.com/work/vortex-visual</loc></url>
+  <url><loc>https://4kilodev.com/work/vortex-work</loc></url>
+  <url><loc>https://4kilodev.com/work/kelem</loc></url>
+  <url><loc>https://4kilodev.com/products</loc></url>
+  <url><loc>https://4kilodev.com/products/geba</loc></url>
+  <url><loc>https://4kilodev.com/products/kiloflow</loc></url>
+  <url><loc>https://4kilodev.com/products/kilodesk</loc></url>
+  <url><loc>https://4kilodev.com/careers</loc></url>
+  <url><loc>https://4kilodev.com/careers/full-stack-engineer</loc></url>
+  <url><loc>https://4kilodev.com/careers/mobile-developer</loc></url>
+  <url><loc>https://4kilodev.com/careers/ui-ux-designer</loc></url>
+  <url><loc>https://4kilodev.com/about</loc></url>
+  <url><loc>https://4kilodev.com/contact</loc></url>
 </urlset>

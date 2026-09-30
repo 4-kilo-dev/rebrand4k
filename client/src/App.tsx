@@ -1,3 +1,5 @@
+"use client";
+
 import { usePathname } from "next/navigation";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
@@ -5,7 +7,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { SiteLayout } from "@/components/SiteLayout";
 import Home from "@/pages/Home";
-import { AboutPage, CareersPage, ContactPage, JobDetailPage, ProductDetailPage, ProductsPage, ServicesPage, WorkPage } from "@/pages/Pages";
+import { AboutPage, CareersPage, ContactPage, JobDetailPage, ProductCaseStudyPage, ProductDetailPage, ProductsPage, ServicesPage, WorkPage } from "@/pages/Pages";
 import NotFound from "@/pages/NotFound";
 
 function Router() {
@@ -14,6 +16,7 @@ function Router() {
   if (pathname === "/") return <Home />;
   if (pathname === "/services") return <ServicesPage />;
   if (pathname === "/work") return <WorkPage />;
+  if (pathname.startsWith("/work/")) return <ProductCaseStudyPage slug={pathname.replace("/work/", "")} />;
   if (pathname === "/products") return <ProductsPage />;
   if (pathname.startsWith("/products/")) {
     const slug = pathname.replace("/products/", "");

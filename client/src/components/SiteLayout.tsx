@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { ArrowRight, ArrowUpRight, Github, Linkedin, Menu, MessageCircle, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { projects } from "@/data/site";
 
 const links = [
@@ -16,7 +16,7 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="container">
         <div className="navbar">
-          <Link href="/" className="wordmark" onClick={() => nav(true)} aria-label="4Kilo Dev home"><span className="wordmark-logo" aria-hidden="true"><img src="/branding/4kilo-logo.jpeg" width={30} height={30} alt="" /></span><span>4Kilo</span><span className="wordmark-suffix">Dev</span></Link>
+          <Link href="/" className="wordmark" onClick={() => nav(true)} aria-label="4Kilo Dev home"><span className="wordmark-logo" aria-hidden="true"><img src="/branding/4kilo-logo.jpg" width={30} height={30} alt="" /></span><span>4Kilo</span><span className="wordmark-suffix">Dev</span></Link>
           <nav className="nav-links" aria-label="Primary navigation">
             {links.map(([label, href]) => <Link key={href} href={href} className={`nav-link ${pathname === href ? "active" : ""}`}>{label}</Link>)}
           </nav>
@@ -32,12 +32,15 @@ export function SiteHeader() {
 }
 
 export function SiteFooter() {
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "");
+  const linkedInUrl = process.env.NEXT_PUBLIC_LINKEDIN_URL;
+  const githubUrl = process.env.NEXT_PUBLIC_GITHUB_URL;
   return (
     <footer className="site-footer">
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <Link href="/" className="wordmark"><span className="wordmark-logo" aria-hidden="true"><img src="/branding/4kilo-logo.jpeg" width={30} height={30} alt="" /></span><span>4Kilo</span><span className="wordmark-suffix">Dev</span></Link>
+            <Link href="/" className="wordmark"><span className="wordmark-logo" aria-hidden="true"><img src="/branding/4kilo-logo.jpg" width={30} height={30} alt="" /></span><span>4Kilo</span><span className="wordmark-suffix">Dev</span></Link>
             <p>Software that moves business forward. Built from Addis Ababa for ambitious teams everywhere.</p>
           </div>
           <div>
@@ -49,13 +52,48 @@ export function SiteFooter() {
             <div className="footer-links"><Link href="/about">About us</Link><Link href="/contact">Contact</Link><a href="mailto:hello@4kilodev.com">hello@4kilodev.com</a><span>Addis Ababa, Ethiopia</span></div>
           </div>
         </div>
-        <div className="footer-bottom"><span>© 2026 4Kilo Dev. All rights reserved.</span><span>Made with care in Addis Ababa.</span></div>
+        <div className="footer-bottom"><span>© 2026 4Kilo Dev. All rights reserved.</span><span>Made with care in Addis Ababa.</span><div className="footer-social">{linkedInUrl && <a href={linkedInUrl} target="_blank" rel="noreferrer" aria-label="4Kilo Dev on LinkedIn"><Linkedin size={17} /></a>}{githubUrl && <a href={githubUrl} target="_blank" rel="noreferrer" aria-label="4Kilo Dev on GitHub"><Github size={17} /></a>}{whatsappNumber && <a href={`https://wa.me/${whatsappNumber}?text=Hello%204Kilo%20Dev%2C%20I%27d%20like%20to%20discuss%20a%20project.`} target="_blank" rel="noreferrer" aria-label="Message 4Kilo Dev on WhatsApp"><MessageCircle size={17} /></a>}</div></div>
       </div>
     </footer>
   );
 }
 
-export function SiteLayout({ children }: { children: React.ReactNode }) { return <div className="app-shell"><SiteHeader /><main>{children}</main><SiteFooter /></div>; }
+export function SiteLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+
+    const elements = Array.from(document.querySelectorAll<HTMLElement>(
+      ".section-head, .service-row, .reason-card, .testimonial-card, .case-study-row, .engagement-card, .product-band, .road-stop, .process-step",
+    ));
+    document.documentElement.classList.add("motion-ready");
+    elements.forEach((element, index) => {
+      element.classList.add("scroll-reveal");
+      element.style.setProperty("--reveal-delay", `${(index % 4) * 65}ms`);
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -32px 0px" });
+
+    elements.forEach(element => observer.observe(element));
+    return () => {
+      observer.disconnect();
+      document.documentElement.classList.remove("motion-ready");
+      elements.forEach(element => {
+        element.classList.remove("scroll-reveal", "is-visible");
+        element.style.removeProperty("--reveal-delay");
+      });
+    };
+  }, [pathname]);
+
+  return <div className="app-shell"><SiteHeader /><main>{children}</main><SiteFooter /></div>;
+}
 
 export function SectionHeading({ eyebrow, title, href, linkLabel }: { eyebrow: string; title: string; href?: string; linkLabel?: string }) { return <div className="section-head"><div><div className="eyebrow">{eyebrow}</div><h2>{title}</h2></div>{href && <Link href={href} className="text-link">{linkLabel ?? "View all"} <ArrowRight size={14} /></Link>}</div>; }
 
@@ -78,4 +116,4 @@ export function ProjectVisual({ visual, title, image }: { visual: string; title:
 
 export function PageHero({ eyebrow, title, copy }: { eyebrow: string; title: React.ReactNode; copy: string }) { return <section className="page-hero"><div className="container"><div className="eyebrow">{eyebrow}</div><h1 className="reveal">{title}</h1><p className="reveal reveal-delay">{copy}</p></div></section>; }
 
-export function InlineCTA() { return <div className="container section-tight"><div className="cta-band"><div><div className="cta-arrow">↗</div></div><div style={{ flex: 1 }}><h2>Let’s build something great together.</h2><p>Have a project in mind? We’d love to hear from you.</p></div><Link href="/contact" className="btn">Start a project <ArrowUpRight size={15} /></Link></div></div>; }
+export function InlineCTA() { return <div className="container section-tight"><div className="cta-band"><div><div className="cta-arrow">↗</div></div><div style={{ flex: 1 }}><h2>Let’s build something great together.</h2><p>Have a project in mind? Book a free first conversation and we’ll help map a useful next step.</p></div><a href="mailto:hello@4kilodev.com?subject=Book%20a%20discovery%20call" className="btn">Book a discovery call <ArrowUpRight size={15} /></a></div></div>; }

@@ -47,7 +47,7 @@ export function WorkCarousel({ projects }: { projects: Project[] }) {
                 <p>{project.description}</p>
                 <div className="work-feature-detail">
                   <span>CORE APPROACH</span>
-                  <strong>Product engineering · Web platforms</strong>
+                  <strong>{project.approach ?? "Product engineering · Web platforms"}</strong>
                 </div>
                 <span className="work-feature-link">View details <ArrowUpRight size={18} /></span>
               </div>
