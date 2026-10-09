@@ -1,6 +1,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, ArrowUpRight, Github, Linkedin, Menu, MessageCircle, X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Github, Instagram, Linkedin, Menu, MessageCircle, X } from "lucide-react";
+
+function TiktokIcon({ size = 17 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 1 1-5.2-1.74 2.89 2.89 0 0 1 2.31-1.42V8.92a7.33 7.33 0 0 0-1.07.07 7.37 7.37 0 1 0 7.41 7.37V9.38a8.27 8.27 0 0 0 4.84 1.56V7.49a4.83 4.83 0 0 1-1.07-.8z"/>
+    </svg>
+  );
+}
+
+function GoogleIcon({ size = 17 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.24 10.285V13.4h6.887c-.282 1.834-2.128 5.365-6.887 5.365-4.14 0-7.516-3.428-7.516-7.65s3.376-7.65 7.516-7.65c2.355 0 3.931.996 4.832 1.856l2.453-2.355C17.954 1.485 15.348 0 12.24 0 5.484 0 0 5.484 0 12.24s5.484 12.24 12.24 12.24c7.058 0 11.758-4.962 11.758-11.966 0-.804-.085-1.415-.19-2.029H12.24z"/>
+    </svg>
+  );
+}
 import { useEffect, useState } from "react";
 import { projects } from "@/data/site";
 
@@ -33,26 +49,90 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "");
-  const linkedInUrl = process.env.NEXT_PUBLIC_LINKEDIN_URL;
+  const linkedInUrl = process.env.NEXT_PUBLIC_LINKEDIN_URL || "https://www.linkedin.com/company/4kilo-dev/";
+  const instagramUrl = process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://www.instagram.com/4kilodev/";
+  const tiktokUrl = process.env.NEXT_PUBLIC_TIKTOK_URL || "https://www.tiktok.com/@4kilo_dev?lang=en";
+  const googleUrl = process.env.NEXT_PUBLIC_GOOGLE_URL || "https://share.google/Yliy4cYKInxkfboRS";
   const githubUrl = process.env.NEXT_PUBLIC_GITHUB_URL;
+
   return (
     <footer className="site-footer">
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <Link href="/" className="wordmark"><span className="wordmark-logo" aria-hidden="true"><img src="/branding/4kilo-logo.jpg" width={30} height={30} alt="" /></span><span>4Kilo</span><span className="wordmark-suffix">Dev</span></Link>
-            <p>Software that moves business forward. Built from Addis Ababa for ambitious teams everywhere.</p>
+            <Link href="/" className="wordmark">
+              <span className="wordmark-logo" aria-hidden="true"><img src="/branding/4kilo-logo.jpg" width={30} height={30} alt="4Kilo Dev Logo" /></span>
+              <span>4Kilo</span>
+              <span className="wordmark-suffix">Dev</span>
+            </Link>
+            <p className="footer-tagline">
+              Engineering capacity for high-growth SaaS, mobile products, & custom software. Delivered from Addis Ababa for global teams.
+            </p>
+            <div className="footer-contact-block">
+              <a href="mailto:hello@4kilodev.com" className="footer-email-link">hello@4kilodev.com</a>
+              <div className="footer-phone-list">
+                <a href="tel:+251913197834">+251 91 319 7834</a>
+                <span className="sep">/</span>
+                <a href="tel:+251974210731">+251 97 421 0731</a>
+              </div>
+            </div>
           </div>
+
           <div>
-            <p className="footer-title">Explore</p>
-            <div className="footer-links"><Link href="/services">Services</Link><Link href="/work">Work</Link><Link href="/products">Products</Link><Link href="/careers">Careers</Link></div>
+            <p className="footer-title">Company</p>
+            <div className="footer-links">
+              <Link href="/about">Our Story</Link>
+              <Link href="/services">Process & Services</Link>
+              <Link href="/contact">Engagement Models</Link>
+              <Link href="/products">Products</Link>
+              <Link href="/careers">Careers</Link>
+            </div>
           </div>
+
           <div>
-            <p className="footer-title">Start here</p>
-            <div className="footer-links"><Link href="/about">About us</Link><Link href="/contact">Contact</Link><a href="mailto:hello@4kilodev.com">hello@4kilodev.com</a><span>Addis Ababa, Ethiopia</span></div>
+            <p className="footer-title">Services</p>
+            <div className="footer-links">
+              <Link href="/services">Engineering Teams</Link>
+              <Link href="/services">Web & Mobile Products</Link>
+              <Link href="/services">ERP & Internal Systems</Link>
+              <Link href="/services">AI & Data Products</Link>
+              <Link href="/services">UI/UX & Brand Identity</Link>
+            </div>
+          </div>
+
+          <div>
+            <p className="footer-title">Why 4Kilo Dev</p>
+            <div className="footer-links">
+              <Link href="/work">Case Studies</Link>
+              <Link href="/about">Client Testimonials</Link>
+              <Link href="/products">Geba & Products</Link>
+              <Link href="/careers">Life @ 4Kilo</Link>
+              <Link href="/contact">Book a Discovery Call</Link>
+            </div>
+          </div>
+
+          <div>
+            <p className="footer-title">Our Locations</p>
+            <div className="footer-links footer-locations">
+              <div className="location-item">
+                <span className="location-city">22, Addis Ababa, Ethiopia</span>
+                <span className="location-desc">Engineering Hub & Headquarters</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="footer-bottom"><span>© 2026 4Kilo Dev. All rights reserved.</span><span>Made with care in Addis Ababa.</span><div className="footer-social">{linkedInUrl && <a href={linkedInUrl} target="_blank" rel="noreferrer" aria-label="4Kilo Dev on LinkedIn"><Linkedin size={17} /></a>}{githubUrl && <a href={githubUrl} target="_blank" rel="noreferrer" aria-label="4Kilo Dev on GitHub"><Github size={17} /></a>}{whatsappNumber && <a href={`https://wa.me/${whatsappNumber}?text=Hello%204Kilo%20Dev%2C%20I%27d%20like%20to%20discuss%20a%20project.`} target="_blank" rel="noreferrer" aria-label="Message 4Kilo Dev on WhatsApp"><MessageCircle size={17} /></a>}</div></div>
+
+        <div className="footer-bottom">
+          <span>© 2026 4Kilo Dev. All rights reserved.</span>
+          <div className="footer-social">
+            {linkedInUrl && <a href={linkedInUrl} target="_blank" rel="noreferrer" aria-label="4Kilo Dev on LinkedIn"><Linkedin size={17} /></a>}
+            {instagramUrl && <a href={instagramUrl} target="_blank" rel="noreferrer" aria-label="4Kilo Dev on Instagram"><Instagram size={17} /></a>}
+            {tiktokUrl && <a href={tiktokUrl} target="_blank" rel="noreferrer" aria-label="4Kilo Dev on TikTok"><TiktokIcon size={16} /></a>}
+            {googleUrl && <a href={googleUrl} target="_blank" rel="noreferrer" aria-label="4Kilo Dev on Google"><GoogleIcon size={16} /></a>}
+            {githubUrl && <a href={githubUrl} target="_blank" rel="noreferrer" aria-label="4Kilo Dev on GitHub"><Github size={17} /></a>}
+            {whatsappNumber && <a href={`https://wa.me/${whatsappNumber}?text=Hello%204Kilo%20Dev%2C%20I%27d%20like%20to%20discuss%20a%20project.`} target="_blank" rel="noreferrer" aria-label="Message 4Kilo Dev on WhatsApp"><MessageCircle size={17} /></a>}
+          </div>
+        </div>
       </div>
     </footer>
   );

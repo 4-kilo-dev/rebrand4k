@@ -10,6 +10,9 @@ import {
   Loader2,
   MapPin,
   MessageCircle,
+  PenLine,
+  Phone,
+  Quote,
   Send,
   Sparkles,
   Users,
@@ -17,6 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { InlineCTA, PageHero, ProjectVisual, SectionHeading } from "@/components/SiteLayout";
+import { ServiceCarousel } from "@/components/ServiceCarousel";
 import { WorkCarousel } from "@/components/WorkCarousel";
 import { caseStudies, engagementModels, jobs, principles, products, projects, services, testimonials } from "@/data/site";
 
@@ -60,23 +64,8 @@ export function ServicesPage() {
       />
       <section className="page-section">
         <div className="container">
-          <div className="card-grid">
-            {services.map(s => {
-              const Icon = s.icon;
-              return (
-                <article className="info-card" key={s.title}>
-                  <Icon size={25} />
-                  <h3>{s.title}</h3>
-                  <p>{s.description}</p>
-                  <ul className="detail-list">
-                    <li><CheckCircle2 size={15} /> Strategy and product thinking</li>
-                    <li><CheckCircle2 size={15} /> Design that earns its place</li>
-                    <li><CheckCircle2 size={15} /> Production-ready implementation</li>
-                  </ul>
-                </article>
-              );
-            })}
-          </div>
+          <SectionHeading eyebrow="Core Capabilities" title="What we bring to your product." />
+          <ServiceCarousel services={services} />
         </div>
       </section>
       <section className="page-section">
@@ -200,7 +189,7 @@ export function ProductDetailPage({ slug }: { slug: string }) {
             <p>{product.description}</p>
           </div>
           <div className="dark-panel">
-            <Sparkles size={22} color="var(--yellow)" />
+            <PenLine size={22} color="var(--yellow)" />
             <h3>What it does</h3>
             <ul className="detail-list">
               {product.features.map(feature => <li key={feature}><CheckCircle2 size={15} /> {feature}</li>)}
@@ -424,7 +413,26 @@ export function AboutPage() {
       <section className="page-section team-section" id="team">
         <div className="container"><SectionHeading eyebrow="The team" title="Small, multidisciplinary, close to the work." /><div className="content-grid team-intro"><p>We bring product thinking, design, and engineering together in one collaborative team. From our base in Addis Ababa, we work directly with the people closest to the problem, then stay involved through launch and what follows.</p><div className="team-disciplines"><span><Layers3 size={17} /> Product direction</span><span><Sparkles size={17} /> Experience design</span><span><Code2 size={17} /> Software engineering</span><span><Zap size={17} /> Delivery and ongoing care</span></div></div></div>
       </section>
-      <section className="page-section" id="client-voices" style={{ paddingTop: 0 }}><div className="container"><SectionHeading eyebrow="Client voices" title="Built in partnership." /><div className="card-grid testimonial-grid">{testimonials.map(item => <figure className="info-card testimonial-card" key={item.name}><span className="testimonial-mark" aria-hidden="true">“</span><blockquote>{item.quote}</blockquote><figcaption><strong>{item.name}</strong><span>{item.context}</span></figcaption></figure>)}</div></div></section>
+      <section className="page-section" id="client-voices" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <SectionHeading eyebrow="Client voices" title="Built in true partnership." />
+          <div className="testimonial-modern-grid">
+            {testimonials.map((item, i) => (
+              <figure className="testimonial-v2-card" key={i}>
+                <div className="testimonial-v2-head">
+                  <div className="testimonial-avatar">{item.name.split(" ")[0][0] + (item.name.split(" ")[1] ? item.name.split(" ")[1][0] : "")}</div>
+                  <div className="testimonial-meta">
+                    <strong>{item.name}</strong>
+                    <span>{item.context}</span>
+                  </div>
+                  <Quote size={20} className="testimonial-v2-icon" />
+                </div>
+                <blockquote>"{item.quote}"</blockquote>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
       <InlineCTA />
     </>
   );
@@ -471,6 +479,7 @@ export function ContactPage() {
             <h2>A good project starts with a good question.</h2>
             <p>Share a little context and we'll reply at <a href="mailto:hello@4kilodev.com" className="text-link">hello@4kilodev.com</a>.</p>
             <div className="detail-list">
+              <div><Phone size={16} /> <a href="tel:+251913197834" className="text-link">+251913197834</a> / <a href="tel:+251974210731" className="text-link">+251974210731</a></div>
               <div><MapPin size={16} /> Addis Ababa, Ethiopia</div>
               <div><MessageCircle size={16} /> Usually replying within 1–2 business days</div>
               <div><Zap size={16} /> Web, mobile, AI, and custom software</div>

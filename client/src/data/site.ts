@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { BrainCircuit, Cloud, Code2, GitBranch, Image, LayoutDashboard, Palette, Scissors, Share2, Smartphone } from "lucide-react";
+import { BrainCircuit, Cloud, Code2, GitBranch, Image, LayoutDashboard, LayoutGrid, Palette, Scissors, Settings, Share2, Smartphone } from "lucide-react";
 
 export type Service = { title: string; description: string; icon: LucideIcon };
 export type Project = { name: string; type: string; description: string; visual: string; image?: string; href: string; approach?: string };
@@ -15,7 +15,17 @@ export const services: Service[] = [
   { title: "Video Editing", description: "Polished video content cut for purpose — from short-form social clips to longer brand films.", icon: Scissors },
   { title: "AI & Machine Learning", description: "Intelligent systems that automate, optimize, and create value.", icon: BrainCircuit },
   { title: "Automation & Integrations", description: "Connected workflows that remove repetitive work and keep systems moving.", icon: GitBranch },
+  { title: "ERP Systems", description: "End-to-end enterprise resource planning systems that connect finance, operations, inventory, and people into one working platform.", icon: LayoutGrid },
+  { title: "Internal Management Systems", description: "Custom internal tools — dashboards, admin panels, and operational platforms — built around how your team actually works.", icon: Settings },
   { title: "Cloud & DevOps", description: "Secure, scalable infrastructure for long-term growth.", icon: Cloud },
+];
+
+export const serviceHighlights: Service[] = [
+  { title: "Product strategy", description: "Clarify the problem, shape the right scope, and make the next decision easier.", icon: BrainCircuit },
+  { title: "Web platforms", description: "Fast, dependable websites and web products built around real business goals.", icon: Code2 },
+  { title: "Mobile apps", description: "Useful, polished iOS and Android experiences people want to keep using.", icon: Smartphone },
+  { title: "Automation systems", description: "Connected workflows and integrations that remove repetitive work.", icon: GitBranch },
+  { title: "AI & internal tools", description: "Practical intelligence, dashboards, and operations software for your team.", icon: Settings },
 ];
 
 export const projects: Project[] = [
@@ -54,11 +64,10 @@ export const engagementModels = [
 ];
 
 export const partners: Partner[] = [
-  { name: "Partner mark N", logo: "/partners/partner-mark-n-transparent.png", descriptor: "Partner reference" },
   { name: "Enate", logo: "/partners/enate-logo.png", descriptor: "Restaurant" },
   { name: "Gulf Ingot Multimodal", logo: "/partners/gulf-ingot-logo.png", descriptor: "Ethiopia · Logistics" },
   { name: "Zions Coffee", logo: "/partners/zions-logo-transparent.png", descriptor: "Hospitality" },
-    { name: "Adore Trading", logo: "/partners/adore-trading-logo.png", descriptor: "Ethiopia · Trading" },
+  { name: "Adore Trading", logo: "/partners/adore-trading-logo.png", descriptor: "Ethiopia · Trading" },
   { name: "Vortex Visual", logo: "/partners/vortex-logo.png", descriptor: "Creative technology" },
   { name: "Ephron Industries", logo: "/partners/ephron-industries-logo.png", descriptor: "Ethiopia · Industry" },
 ];
@@ -71,7 +80,7 @@ export const principles = [
 ];
 
 export const products = [
-  { name: "Geba", slug: "geba", tagline: "Verify payments before you complete the sale.", status: "Beta", description: "A mobile-first payment verification tool for Ethiopian businesses, with transaction checks, provider history, and clear confirmation before a sale is completed.", features: ["Telebirr and bank-transfer checks", "Duplicate transaction detection", "Branch-aware payment history"] },
+  { name: "Geba", slug: "geba", tagline: "Know before you proceed.", status: "Beta", description: "A tool for moments where certainty matters. Built for businesses that can't afford to find out later.", features: ["Quick confidence before a transaction closes", "A clearer picture of what happened", "Built for how business actually moves here"] },
   { name: "KiloFlow", slug: "kiloflow", tagline: "A lightweight workflow automation tool for modern teams.", status: "Beta", description: "KiloFlow removes the friction from day-to-day operations. Build simple automations, give your team visibility over shared work, and stop relying on spreadsheets and chat threads to keep things moving.", features: ["Simple workflow building", "Team visibility", "Useful automations"] },
   { name: "KiloDesk", slug: "kilodesk", tagline: "A calm operations hub for growing service businesses.", status: "Coming soon", description: "KiloDesk brings client context, repeatable playbooks, and clear reporting into one focused space — so service teams can spend less time on coordination and more time on delivery.", features: ["Shared client context", "Repeatable playbooks", "Actionable reporting"] },
 ];
