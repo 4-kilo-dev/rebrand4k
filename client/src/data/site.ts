@@ -90,3 +90,44 @@ export const jobs = [
   { slug: "mobile-developer", title: "Mobile Developer", department: "Engineering", location: "Addis Ababa / Hybrid", type: "Full-time", description: "We're hiring a mobile developer to help build and refine apps that people actually enjoy using. You'll work across the full mobile lifecycle — from first prototype to a stable, well-maintained release — on a team that cares about the details.", responsibilities: ["Build and refine mobile experiences", "Collaborate across product disciplines", "Support a reliable release process"], requirements: ["Experience with React Native or native mobile", "Strong product instincts", "Clear written communication"] },
   { slug: "ui-ux-designer", title: "UI/UX Designer", department: "Design", location: "Addis Ababa / Remote", type: "Part-time", description: "We're looking for a designer who thinks in systems and sweats the details. You'll shape how our products feel — turning complex requirements into clear, considered interfaces that are a pleasure to use and straightforward to build.", responsibilities: ["Turn complex needs into clear flows", "Create interfaces with a strong point of view", "Help teams see the product before it is built"], requirements: ["A portfolio showing end-to-end thinking", "Strong visual and interaction fundamentals", "Curiosity and care"] },
 ];
+
+export type TeamMember = {
+  category: string;
+  discipline: string;
+  bio: string;
+  focus: string;
+};
+
+export const team: TeamMember[] = [
+  {
+    category: "Strategy",
+    discipline: "Product & Strategy",
+    bio: "Focuses on product direction, user discovery, and aligning client goals into a clean, deliverable product scope.",
+    focus: "Product Direction",
+  },
+  {
+    category: "Engineering",
+    discipline: "Full-Stack Engineering",
+    bio: "Leads technical architecture, backend APIs, and web engineering to ensure reliable, high-performance execution.",
+    focus: "Full-Stack & APIs",
+  },
+  {
+    category: "Design",
+    discipline: "UI/UX & Experience Design",
+    bio: "Crafts interface design systems, interactive prototypes, and clear visual experiences that users enjoy.",
+    focus: "Design & UX",
+  },
+  {
+    category: "Mobile",
+    discipline: "Mobile & Cloud Systems",
+    bio: "Specializes in iOS/Android app engineering, cloud deployment pipelines, and scalable database architecture.",
+    focus: "Mobile & Cloud",
+  },
+  {
+    category: "Automation",
+    discipline: "Operations & Automation",
+    bio: "Drives internal automation workflows, client partnerships, and continuous post-launch quality assurance.",
+    focus: "Ops & Automation",
+  },
+];
+

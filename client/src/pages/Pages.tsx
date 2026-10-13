@@ -21,8 +21,9 @@ import {
 import Link from "next/link";
 import { InlineCTA, PageHero, ProjectVisual, SectionHeading } from "@/components/SiteLayout";
 import { ServiceCarousel } from "@/components/ServiceCarousel";
+import { TeamCarousel } from "@/components/TeamCarousel";
 import { WorkCarousel } from "@/components/WorkCarousel";
-import { caseStudies, engagementModels, jobs, principles, products, projects, services, testimonials } from "@/data/site";
+import { caseStudies, engagementModels, jobs, principles, products, projects, services, team, testimonials } from "@/data/site";
 
 // ─── EmailJS via REST API (no npm package needed) ────────────────────────────
 const EJS_SERVICE = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "";
@@ -411,7 +412,13 @@ export function AboutPage() {
         </div>
       </section>
       <section className="page-section team-section" id="team">
-        <div className="container"><SectionHeading eyebrow="The team" title="Small, multidisciplinary, close to the work." /><div className="content-grid team-intro"><p>We bring product thinking, design, and engineering together in one collaborative team. From our base in Addis Ababa, we work directly with the people closest to the problem, then stay involved through launch and what follows.</p><div className="team-disciplines"><span><Layers3 size={17} /> Product direction</span><span><Sparkles size={17} /> Experience design</span><span><Code2 size={17} /> Software engineering</span><span><Zap size={17} /> Delivery and ongoing care</span></div></div></div>
+        <div className="container">
+          <SectionHeading eyebrow="The team" title="Small, multidisciplinary, close to the work." />
+          <p className="team-subhead">
+            We bring product strategy, UI/UX design, full-stack engineering, mobile development, and operational automation together in one collaborative team based in Addis Ababa. We work directly on every project without layers or handoffs.
+          </p>
+          <TeamCarousel members={team} />
+        </div>
       </section>
       <section className="page-section" id="client-voices" style={{ paddingTop: 0 }}>
         <div className="container">
