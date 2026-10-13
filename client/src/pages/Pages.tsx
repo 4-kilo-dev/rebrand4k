@@ -31,9 +31,15 @@ const EJS_CONTACT = process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID ?? "";
 const EJS_APPLY   = process.env.NEXT_PUBLIC_EMAILJS_APPLICATION_TEMPLATE_ID ?? "";
 const EJS_KEY     = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "";
 
+function isEjsConfigured(serviceId: string, templateId: string, publicKey: string): boolean {
+  if (!serviceId || !templateId || !publicKey) return false;
+  if (serviceId.includes("xxxxxxx") || templateId.includes("xxxxxxx") || publicKey.includes("xxxx")) return false;
+  return true;
+}
+
 async function sendEmail(templateId: string, params: Record<string, string>): Promise<void> {
-  if (!EJS_SERVICE || !templateId || !EJS_KEY) {
-    throw new Error("EmailJS env vars not configured");
+  if (!isEjsConfigured(EJS_SERVICE, templateId, EJS_KEY)) {
+    throw new Error("EMAILJS_NOT_CONFIGURED");
   }
   const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
     method: "POST",
@@ -47,7 +53,7 @@ async function sendEmail(templateId: string, params: Record<string, string>): Pr
   });
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`EmailJS ${res.status}: ${text}`);
+    throw new Error(`EmailJS error (${res.status}): ${text}`);
   }
 }
 
@@ -328,14 +334,28 @@ function ApplicationForm({ jobTitle }: { jobTitle: string }) {
     e.preventDefault();
     setStatus("sending");
     try {
-      await sendEmail(EJS_APPLY, { ...fields, job_title: jobTitle });
+      await sendEmail(EJS_APPLY, {
+        ...fields,
+        job_title: jobTitle,
+        name: fields.from_name,
+        from_name: fields.from_name,
+        user_name: fields.from_name,
+        email: fields.from_email,
+        from_email: fields.from_email,
+        user_email: fields.from_email,
+        reply_to: fields.from_email,
+        portfolio: fields.portfolio,
+        cover_note: fields.cover_note,
+        message: fields.cover_note,
+      });
       setStatus("sent");
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("[EmailJS] Send failed:", err);
+      const isConfigError = err instanceof Error && err.message === "EMAILJS_NOT_CONFIGURED";
       setErrorMsg(
-        !EJS_SERVICE || !EJS_APPLY || !EJS_KEY
-          ? "Email service is not configured. Please contact us directly at hello@4kilodev.com"
-          : "Something went wrong. Please try again or email us directly at hello@4kilodev.com"
+        isConfigError
+          ? "Email service is not configured yet. Please add your EmailJS credentials in .env.local or contact us at hello@4kilodev.com"
+          : "Something went wrong sending your application. Please try again or email us directly at hello@4kilodev.com"
       );
       setStatus("error");
     }
@@ -347,6 +367,17 @@ function ApplicationForm({ jobTitle }: { jobTitle: string }) {
         <CheckCircle2 size={25} />
         <h3>Application received.</h3>
         <p>Thanks for putting yourself forward for <strong>{jobTitle}</strong>. We'll review your application and be in touch within a few days.</p>
+        <button
+          type="button"
+          className="btn btn-secondary btn-sm"
+          style={{ marginTop: 16 }}
+          onClick={() => {
+            setFields({ from_name: "", from_email: "", portfolio: "", cover_note: "" });
+            setStatus("idle");
+          }}
+        >
+          Submit another application
+        </button>
       </div>
     );
   }
@@ -459,14 +490,27 @@ export function ContactPage() {
     e.preventDefault();
     setStatus("sending");
     try {
-      await sendEmail(EJS_CONTACT, fields);
+      await sendEmail(EJS_CONTACT, {
+        ...fields,
+        name: fields.from_name,
+        from_name: fields.from_name,
+        user_name: fields.from_name,
+        email: fields.from_email,
+        from_email: fields.from_email,
+        user_email: fields.from_email,
+        reply_to: fields.from_email,
+        project_type: fields.project_type,
+        budget: fields.budget,
+        message: fields.message,
+      });
       setStatus("sent");
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("[EmailJS] Send failed:", err);
+      const isConfigError = err instanceof Error && err.message === "EMAILJS_NOT_CONFIGURED";
       setErrorMsg(
-        !EJS_SERVICE || !EJS_CONTACT || !EJS_KEY
-          ? "Email service is not configured. Please email us directly at hello@4kilodev.com"
-          : "Something went wrong. Please try again or email us at hello@4kilodev.com"
+        isConfigError
+          ? "Email service is not configured yet. Please add your EmailJS credentials in .env.local or email us at hello@4kilodev.com"
+          : "Something went wrong sending your message. Please try again or email us directly at hello@4kilodev.com"
       );
       setStatus("error");
     }
@@ -502,14 +546,25 @@ export function ContactPage() {
               <CheckCircle2 size={25} />
               <h3>Message sent.</h3>
               <p>Thanks for reaching out. We'll review your message and come back to you within 1–2 business days.</p>
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                style={{ marginTop: 16 }}
+                onClick={() => {
+                  setFields({ from_name: "", from_email: "", project_type: "", budget: "", message: "" });
+                  setStatus("idle");
+                }}
+              >
+                Send another message
+              </button>
             </div>
           ) : (
             <form className="form-card" onSubmit={handleSubmit}>
               <div className="form-grid">
                 <Field label="Name" placeholder="Your name" value={fields.from_name} onChange={set("from_name")} />
                 <Field label="Email" placeholder="you@example.com" type="email" value={fields.from_email} onChange={set("from_email")} />
-                <Field label="Project type" placeholder="Web, mobile, AI…" value={fields.project_type} onChange={set("project_type")} />
-                <Field label="Budget range" placeholder="A helpful range" value={fields.budget} onChange={set("budget")} />
+                <Field label="Project type" placeholder="Web, mobile, AI…" value={fields.project_type} onChange={set("project_type")} required={false} />
+                <Field label="Budget range" placeholder="A helpful range" value={fields.budget} onChange={set("budget")} required={false} />
                 <Field label="Message" placeholder="What are you hoping to build?" textarea value={fields.message} onChange={set("message")} full />
               </div>
               {status === "error" && (
@@ -531,7 +586,7 @@ export function ContactPage() {
 // ─── Field helper ─────────────────────────────────────────────────────────────
 
 function Field({
-  label, placeholder, type = "text", textarea = false, full = false, value, onChange,
+  label, placeholder, type = "text", textarea = false, full = false, value, onChange, required = true,
 }: {
   label: string;
   placeholder?: string;
@@ -539,14 +594,15 @@ function Field({
   textarea?: boolean;
   full?: boolean;
   value?: string;
+  required?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }) {
   return (
     <div className={`field ${full ? "full" : ""}`}>
       <label>{label}</label>
       {textarea
-        ? <textarea placeholder={placeholder} value={value} onChange={onChange} required />
-        : <input type={type} placeholder={placeholder} value={type === "file" ? undefined : value} onChange={onChange} required={type !== "file"} />}
+        ? <textarea placeholder={placeholder} value={value} onChange={onChange} required={required} />
+        : <input type={type} placeholder={placeholder} value={type === "file" ? undefined : value} onChange={onChange} required={type === "file" ? false : required} />}
     </div>
   );
 }
