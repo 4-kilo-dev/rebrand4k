@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft, ArrowRight, Layers3, Sparkles, Code2, Smartphone, Settings } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { TeamMember } from "@/data/site";
 
 const icons = [Layers3, Code2, Sparkles, Smartphone, Settings];
@@ -17,6 +17,8 @@ function cardPosition(index: number, active: number, total: number) {
 export function TeamCarousel({ members }: { members: TeamMember[] }) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   useEffect(() => {
     if (paused || members.length < 2) return;
@@ -25,6 +27,27 @@ export function TeamCarousel({ members }: { members: TeamMember[] }) {
   }, [paused, members.length]);
 
   const goTo = (index: number) => setActive((index + members.length) % members.length);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+    touchEndX.current = null;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    const diff = touchStartX.current - touchEndX.current;
+    if (diff > 45) {
+      goTo(active + 1);
+    } else if (diff < -45) {
+      goTo(active - 1);
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
 
   return (
     <div
@@ -35,6 +58,9 @@ export function TeamCarousel({ members }: { members: TeamMember[] }) {
       onBlur={event => {
         if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false);
       }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       <div className="team-carousel-stage" aria-live="polite">
         {members.map((member, index) => {

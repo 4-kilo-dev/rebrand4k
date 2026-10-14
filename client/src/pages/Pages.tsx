@@ -38,19 +38,37 @@ function isEjsConfigured(serviceId: string, templateId: string, publicKey: strin
 }
 
 async function sendEmail(templateId: string, params: Record<string, string>): Promise<void> {
-  if (!isEjsConfigured(EJS_SERVICE, templateId, EJS_KEY)) {
+  const activeTemplate = templateId || EJS_APPLY;
+  if (!isEjsConfigured(EJS_SERVICE, activeTemplate, EJS_KEY)) {
     throw new Error("EMAILJS_NOT_CONFIGURED");
   }
-  const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      service_id: EJS_SERVICE,
-      template_id: templateId,
-      user_id: EJS_KEY,
-      template_params: params,
-    }),
-  });
+
+  const postEmail = async (tid: string) => {
+    return fetch("https://api.emailjs.com/api/v1.0/email/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        service_id: EJS_SERVICE,
+        template_id: tid,
+        user_id: EJS_KEY,
+        template_params: params,
+      }),
+    });
+  };
+
+  let res = await postEmail(activeTemplate);
+
+  // If the template ID is invalid/not found and a working fallback exists, retry once with the fallback template
+  if (!res.ok && res.status === 400 && EJS_APPLY && activeTemplate !== EJS_APPLY) {
+    const errorText = await res.text();
+    if (errorText.toLowerCase().includes("not found")) {
+      console.warn(`[EmailJS] Template ${activeTemplate} not found. Retrying with fallback ${EJS_APPLY}...`);
+      res = await postEmail(EJS_APPLY);
+    } else {
+      throw new Error(`EmailJS error (${res.status}): ${errorText}`);
+    }
+  }
+
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`EmailJS error (${res.status}): ${text}`);
@@ -351,12 +369,14 @@ function ApplicationForm({ jobTitle }: { jobTitle: string }) {
       setStatus("sent");
     } catch (err: unknown) {
       console.error("[EmailJS] Send failed:", err);
-      const isConfigError = err instanceof Error && err.message === "EMAILJS_NOT_CONFIGURED";
-      setErrorMsg(
-        isConfigError
-          ? "Email service is not configured yet. Please add your EmailJS credentials in .env.local or contact us at hello@4kilodev.com"
-          : "Something went wrong sending your application. Please try again or email us directly at hello@4kilodev.com"
-      );
+      const msg = err instanceof Error ? err.message : "";
+      if (msg === "EMAILJS_NOT_CONFIGURED") {
+        setErrorMsg("Email service is not configured yet. Please check your EmailJS credentials in .env.local.");
+      } else if (msg.startsWith("EmailJS error")) {
+        setErrorMsg(`Failed to send: ${msg.replace(/^EmailJS error \(\d+\):\s*/, "")}`);
+      } else {
+        setErrorMsg("Something went wrong sending your application. Please try again or email us directly at hello@4kilodev.com");
+      }
       setStatus("error");
     }
   }
@@ -506,12 +526,14 @@ export function ContactPage() {
       setStatus("sent");
     } catch (err: unknown) {
       console.error("[EmailJS] Send failed:", err);
-      const isConfigError = err instanceof Error && err.message === "EMAILJS_NOT_CONFIGURED";
-      setErrorMsg(
-        isConfigError
-          ? "Email service is not configured yet. Please add your EmailJS credentials in .env.local or email us at hello@4kilodev.com"
-          : "Something went wrong sending your message. Please try again or email us directly at hello@4kilodev.com"
-      );
+      const msg = err instanceof Error ? err.message : "";
+      if (msg === "EMAILJS_NOT_CONFIGURED") {
+        setErrorMsg("Email service is not configured yet. Please check your EmailJS credentials in .env.local.");
+      } else if (msg.startsWith("EmailJS error")) {
+        setErrorMsg(`Failed to send: ${msg.replace(/^EmailJS error \(\d+\):\s*/, "")}`);
+      } else {
+        setErrorMsg("Something went wrong sending your message. Please try again or email us directly at hello@4kilodev.com");
+      }
       setStatus("error");
     }
   }
