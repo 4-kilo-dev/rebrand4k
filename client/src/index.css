@@ -158,7 +158,7 @@ button { border: 0; }
 .dark .partner-mark-image[src="/partners/enate-logo.png"] { content: url("/partners/enate-logo-dark.png"); filter: none; }
 .dark .partner-mark-image[src="/partners/gulf-ingot-logo.png"] { content: url("/partners/gulf-ingot-logo-dark.png"); filter: none; }
 .dark .partner-mark-image[src="/partners/adore-trading-logo.png"] { content: url("/partners/adore-trading-logo-dark.png"); filter: none; }
-.dark .partner-mark-image[src="/partners/ephron-industries-logo.png"] { content: url("/partners/ephron-industries-logo-dark.png"); filter: none; }
+.dark .partner-mark-image[src="/partners/akg-industries-logo.png"] { content: url("/partners/akg-industries-logo-dark.png"); filter: none; }
 @keyframes partners-flow { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 .section { padding: 112px 0; }

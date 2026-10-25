@@ -69,7 +69,7 @@ export const partners: Partner[] = [
   { name: "Zions Coffee", logo: "/partners/zions-logo-transparent.png", descriptor: "Hospitality" },
   { name: "Adore Trading", logo: "/partners/adore-trading-logo.png", descriptor: "Ethiopia · Trading" },
   { name: "Vortex Visual", logo: "/partners/vortex-logo.png", descriptor: "Creative technology" },
-  { name: "Ephron Industries", logo: "/partners/ephron-industries-logo.png", descriptor: "Ethiopia · Industry" },
+  { name: "AKG Industries Limited", logo: "/partners/akg-industries-logo.png", descriptor: "Ethiopia · Industry" },
 ];
 
 export const principles = [
